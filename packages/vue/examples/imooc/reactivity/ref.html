@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="../../../dist/vue.global.js"></script>
+  </head>
+
+  <body>
+    <div id="app"></div>
+  </body>
+
+  <script>
+    const { ref, effect } = Vue
+
+    // 响应式数据
+    const obj = ref({
+      name: 'zs'
+    })
+
+    effect(() => {
+      // obj.value触发ref的get value行为
+      // obj.value.name实际上是proxy.value 触发了proxy（reactive代理对象）的get value行为
+      document.querySelector('#app').innerText = obj.value.name
+    })
+
+    console.log(obj) //proxy代理
+
+    setTimeout(() => {
+      // obj.value触发ref的get value行为
+      // obj.value.name = 'ls' 实际上是 proxy.name = 'ls' 触发了proxy的setter行为
+      obj.value.name = 'ls'
+    }, 2000)
+  </script>
+</html>
